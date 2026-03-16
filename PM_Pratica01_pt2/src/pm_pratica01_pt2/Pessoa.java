@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pm_pratica01_pt2;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class Pessoa {
 
@@ -15,12 +10,12 @@ public class Pessoa {
     private double altura;
     private double peso;
     private double imc;
-    private Date data_nascimento;
+    private Data data_nascimento;
 
-    public Pessoa(String nome, String sobrenome, int idade, double altura, double peso) {
+    public Pessoa(String nome, String sobrenome, Data data_nascimento, double altura, double peso) {
         this.nome = nome;
         this.sobrenome = sobrenome;
-        this.idade = idade;
+        this.data_nascimento = data_nascimento;
         this.altura = altura;
         this.peso = peso;
     }
@@ -45,10 +40,6 @@ public class Pessoa {
         return idade;
     }
 
-    public void setIdade(int idade) {
-        this.idade = idade;
-    }
-
     public double getAltura() {
         return altura;
     }
@@ -69,15 +60,11 @@ public class Pessoa {
         return imc;
     }
 
-    public void setImc(double imc) {
-        this.imc = imc;
-    }
-
-    public Date getData_nascimento() {
+    public Data getData_nascimento() {
         return data_nascimento;
     }
 
-    public void setData_nascimento(Date data_nascimento) {
+    public void setData_nascimento(Data data_nascimento) {
         this.data_nascimento = data_nascimento;
     }
 
@@ -89,7 +76,7 @@ public class Pessoa {
     public String informaObesidade() {
         if (imc < 18.5) {
             return "Abaixo do peso";
-        } else if (imc >= 18.5 && imc <= 24.9) {
+        } else if (imc <= 24.9) {
             return "Peso normal";
         } else if (imc <= 29.9) {
             return "Sobrepeso";
@@ -103,20 +90,16 @@ public class Pessoa {
     }
 
     public int calculaIdade() {
-
         Calendar hoje = Calendar.getInstance();
-        Calendar nascimento = Calendar.getInstance();
-        nascimento.setTime(data_nascimento);
+        idade = hoje.get(Calendar.YEAR) - data_nascimento.getAno();
 
-        int idadeCalculada = hoje.get(Calendar.YEAR) - nascimento.get(Calendar.YEAR);
+        int mesAtual = hoje.get(Calendar.MONTH) + 1;
+        int diaAtual = hoje.get(Calendar.DAY_OF_MONTH);
 
-        if (hoje.get(Calendar.MONTH) < nascimento.get(Calendar.MONTH)
-                || (hoje.get(Calendar.MONTH) == nascimento.get(Calendar.MONTH)
-                && hoje.get(Calendar.DAY_OF_MONTH) < nascimento.get(Calendar.DAY_OF_MONTH))) {
-            idadeCalculada--;
+        if (mesAtual < data_nascimento.getMes()
+                || (mesAtual == data_nascimento.getMes() && diaAtual < data_nascimento.getDia())) {
+            idade--;
         }
-
-        this.idade = idadeCalculada;
-        return idadeCalculada;
+        return idade;
     }
 }
